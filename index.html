@@ -12,18 +12,16 @@
     <header>
       <h1>To-Do-App</h1>
     </header>
-    <form action="">
-      <input type="text" />
-      <button>Send</button>
+    <form action="/notes" method="POST">
+      <!-- name="content" will be important for the server -->
+      <input type="text" name="content" required />
+      <button id="post-btn">Send</button>
     </form>
-    <section class="list">
-      <ul>
-        <li>Placeholder to do item</li>
-        <li>Placeholder to do item</li>
-        <li>Placeholder to do item</li>
-        <li>Placeholder to do item</li>
-        <li>Placeholder to do item</li>
-      </ul>
+    <section aria-labelledby="todo-list">
+      <!-- this labelledby and id combo is an accessibility thing -->
+      <h2 id="todo-list">My To-Do List</h2>
+      <ul class="note-list"></ul>
+      <button id="get-btn">Get notes</button>
     </section>
     <script src="main.js"></script>
   </body>
