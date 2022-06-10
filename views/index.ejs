@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style/normalize.css" />
+    <link rel="stylesheet" href="style/style.css" />
+    <title>ToDo App V1.0</title>
+  </head>
+  <body>
+    <header>
+      <h1>To-Do-App</h1>
+    </header>
+    <section aria-labelledby="todo-list">
+      <h2>My To-Do List</h2>
+      <ul id="todo-list">
+        <% if (toDoList.length < 1) {%>
+        <li class="item null-item">Your ToDo list is empty</li>
+        <% } else { for (let i=0; i < toDoList.length; i++) {%>
+        <li class="item"><%= toDoList[i].content %></li>
+        <% } } %>
+      </ul>
+    </section>
+    <section aria-labelledby="add-todo">
+      <h3 id="add-todo">Add a ToDo</h3>
+      <form action="/toDos" method="POST">
+        <!-- name="content" will be important for the server -->
+        <input type="text" name="content" placeholder="content" required />
+        <button id="post-btn">Send</button>
+      </form>
+    </section>
+    <script src="main.js"></script>
+  </body>
+</html>
