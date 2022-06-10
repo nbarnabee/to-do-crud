@@ -29,16 +29,19 @@ app.get("/", (req, res) => {
     .toArray()
     .then((data) => {
       res.render("index.ejs", { toDoList: data });
-    });
+    })
+    .catch((error) => console.error(error));
 });
 
 // when a new note is added
-app.post("/notes", (request, response) => {
-  console.log("Post request made");
-  const body = request.body;
-  console.log(body);
-  addNote(body);
-  response.redirect("/");
+app.post("/addToDo", (request, response) => {
+  db.collection("toDos")
+    .insertOne({ content: request.body.content })
+    .then((result) => {
+      console.log("Note added");
+      response.redirect("/");
+    })
+    .catch((error) => console.error(error));
 });
 
 //set the server to listen
