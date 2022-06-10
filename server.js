@@ -1,4 +1,5 @@
 //set up express
+const { response } = require("express");
 const express = require("express");
 const app = express();
 const MongoClient = require("mongodb").MongoClient;
@@ -7,26 +8,28 @@ const PORT = 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-//temporary solution, so we can play and test without having it connected to a DB
-let toDoList = [];
-
-//set express to serve static files from the public folder
 app.use(express.static("public"));
+app.set("view engine", "ejs");
+
+let db,
+  dbConnectionStr = process.env.DB_STRING;
+
+MongoClient.connect(
+  `mongodb+srv://${dbConnectionStr}@cluster0.rfqhbna.mongodb.net/?retryWrites=true&w=majority`,
+  { useUnifiedTopology: true }
+).then((client) => {
+  console.log("Connected to database");
+  db = client.db("toDoCrud");
+});
 
 //routing for the index page
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/index.html");
-});
-
-// when a request is made for the list
-app.get("/notes", (request, response) => {
-  // what to do if the list is empty
-  if (toDoList.length < 1) {
-    response.json(`You have nothing on your To Do list.`);
-  } else {
-    response.json(toDoList);
-  }
+  db.collection("toDos")
+    .find()
+    .toArray()
+    .then((data) => {
+      res.render("index.ejs", { toDoList: data });
+    });
 });
 
 // when a new note is added
@@ -42,12 +45,3 @@ app.post("/notes", (request, response) => {
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-// I am trying to separate the functions from the server code.
-// There is probably a way to make an entirely separate .js file and then import it as a module or something, but I'm taking the simple route for now.
-function addNote(body) {
-  const note = {
-    content: body.content,
-  };
-  toDoList = toDoList.concat(note);
-}
