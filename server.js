@@ -1,4 +1,3 @@
-//set up express
 const { response } = require("express");
 const express = require("express");
 const app = express();
@@ -22,7 +21,6 @@ MongoClient.connect(
   db = client.db("toDoCrud");
 });
 
-//routing for the index page
 app.get("/", (req, res) => {
   db.collection("toDos")
     .find()
@@ -33,7 +31,6 @@ app.get("/", (req, res) => {
     .catch((error) => console.error(error));
 });
 
-// when a new note is added
 app.post("/addToDo", (request, response) => {
   db.collection("toDos")
     .insertOne({ content: request.body.content })
@@ -44,7 +41,6 @@ app.post("/addToDo", (request, response) => {
     .catch((error) => console.error(error));
 });
 
-//set the server to listen
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
