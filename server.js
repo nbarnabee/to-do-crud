@@ -1,6 +1,10 @@
 //set up express
 const express = require("express");
 const app = express();
+const MongoClient = require("mongodb").MongoClient;
+require("dotenv").config();
+const PORT = 5000;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -35,7 +39,6 @@ app.post("/notes", (request, response) => {
 });
 
 //set the server to listen
-const PORT = 5000;
 app.listen(process.env.PORT || PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
